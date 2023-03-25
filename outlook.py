@@ -11,7 +11,6 @@ class Outlook():
     def login(self, username, password):
         self.username = username
         self.password = password
-        login_attempts = 0
         while True:
             try:
                 self.imap = imaplib.IMAP4_SSL(str('imap-mail.outlook.com'),int(993))
@@ -21,10 +20,7 @@ class Outlook():
                 return
             except Exception as err:
                 print("\033[0;31m Sign in error: %s" % str(err))
-                login_attempts = login_attempts + 1
-                if login_attempts < 3:
-                    continue
-                assert False, 'login failed'
+                continue
     def sendEmailMIME(self, recipient, subject, message):
         msg = email.mime.multipart.MIMEMultipart()
         msg['to'] = recipient
