@@ -14,12 +14,27 @@ while True:
         password = str(hot[1])
         mail = outlook.Outlook()
         mail.login(account,password)
-        mail.inbox()
         try:
-            mail.unread()
-            sub = mail.mailsubject()
-            bd = mail.mailbody()
-            print('\033[1;32m   Found message with subject: ' + sub + '\n\033[1;37m   Forwarding to ' + main + '...')
-            mail.sendEmail(main,sub,bd)
+            mail.inbox()
+            try:
+                mail.unread()
+                sub = mail.mailsubject()
+                bd = mail.mailbody()
+                print('\033[1;32m   Found message with subject: ' + sub + '\n\033[1;37m   Forwarding to ' + main + '...')
+                mail.sendEmail(main,sub,bd)
+            except:
+                print("\033[1;33m No unread emails")
         except:
-            print("\033[1;33m No unread emails")
+            try:
+                time.sleep(3)
+                mail.inbox()
+                try:
+                    mail.unread()
+                    sub = mail.mailsubject()
+                    bd = mail.mailbody()
+                    print('\033[1;32m   Found message with subject: ' + sub + '\n\033[1;37m   Forwarding to ' + main + '...')
+                    mail.sendEmail(main,sub,bd)
+                except:
+                    print("\033[1;33m No unread emails")
+            except:
+                print("\033[0;31m Error: Could not find inbox, Login manually to " + account + " and retry.")
